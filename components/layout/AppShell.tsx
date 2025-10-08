@@ -83,7 +83,7 @@ export default function AppShell({
                 EMS
               </div>
               <div>
-                <p className="text-base font-bold tracking-tight text-slate-900">Gov Employee Hub</p>
+                <p className="text-base font-bold tracking-tight text-slate-900">e-निरीक्षण</p>
                 <p className="text-xs font-medium text-slate-500">Performance &amp; AI workspace</p>
               </div>
             </div>
