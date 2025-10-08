@@ -1,0 +1,98 @@
+I am building a performance management module for government offices. I already have a Next.js + MongoDB app with the following tabs:
+Dashboard
+Project tab
+KPI tab (page exists but not functional yet)
+APAR tab (page exists but not functional yet)
+AI tab (for generating summaries)
+I want to make KPI and APAR fully functional (like in an Employee Management System), add mail sending capability, and make the settings page work with dark/light theme.
+Please make all required backend + frontend changes, but don’t break existing DB structure. Extend instead of replacing.
+🔹 Features to Add
+1. User Model
+Add a User model if not already present.
+Fields:
+name (string, required)
+email (string, required, unique)
+role (enum: hq_staff, field_staff, admin, super_admin)
+department (string, optional)
+themePreference (enum: light, dark, system, default: system)
+Use this model for assigning KPIs and APARs.
+2. KPI Module
+I already have models/KPI.ts. Extend it with the following fields:
+title (string, required)
+description (string, optional)
+assignedTo (ObjectId → User, required)
+assignedBy (ObjectId → User, optional)
+role (enum: hq_staff, field_staff, required)
+status (enum: not_started, in_progress, completed, at_risk, default: not_started)
+deadline (Date)
+progress (number, default 0, % completion updated by employee)
+weightage (number, default 10)
+score (number, default 0, given by admin)
+remarks (string, optional)
+Frontend (KPI Page)
+Employee view:
+List of KPIs assigned.
+Ability to update progress (%).
+See deadline, status, remarks.
+Graphs (use recharts or chart.js) showing completed vs pending.
+Admin view:
+Assign new KPIs (modal form).
+Update scores + remarks.
+Generate KPI report card for each employee.
+3. APAR Module
+Create new collection: models/APAR.ts
+employee (ObjectId → User, required)
+year (number, required)
+selfAppraisal → achievements, challenges, innovations (strings)
+reviewer (ObjectId → User, optional)
+reviewerComments (string, optional)
+reviewerScore (number, default 0)
+finalScore (number, default 0) → formula = (avg KPI score * weight) + reviewerScore
+status (enum: draft, submitted, reviewed, finalized, default: draft)
+Frontend (APAR Page)
+Employee view:
+Fill out self-appraisal form.
+Submit APAR for review.
+View APAR history (previous years).
+Admin view:
+See submitted APARs.
+Add reviewer comments + reviewerScore.
+Finalize APAR (lock it).
+4. Mail Functionality
+Add a new models/Mail.ts (optional for history):
+from (ObjectId → User)
+to (string, email)
+subject (string)
+body (string)
+status (enum: sent, failed)
+Backend API
+Create /api/mail/send endpoint.
+Use Nodemailer or Resend API for sending emails.
+Accept JSON: {to, subject, body}.
+Frontend (Mail Tab)
+Compose Mail form.
+Send email to the entered address.
+Store mail log in DB if Mail collection enabled.
+5. Settings Page
+Add a dark/light mode toggle (light / dark / system).
+Use Tailwind’s dark: classes.
+Save user’s choice in both localStorage and DB (themePreference in User).
+On login, app loads theme from DB.
+6. Notifications (Optional but Recommended)
+Create new collection: models/Notification.ts
+user (ObjectId → User)
+message (string)
+read (boolean, default false)
+type (enum: kpi, apar, mail, system)
+Trigger notifications:
+When KPI assigned → notify employee.
+When APAR reviewed → notify employee.
+When mail sent → notify sender.
+🔹 Summary
+Extend KPI model with tasks, scoring, progress.
+Add APAR model for yearly performance reviews.
+Implement role-based views (employee vs admin).
+Add mail sending with history.
+Add dark/light theme toggle in settings (persist to DB).
+Optional: add notification system.
+⚡ Make sure not to break old DB entries. Keep defaults for new fields.
