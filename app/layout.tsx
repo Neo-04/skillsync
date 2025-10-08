@@ -6,7 +6,7 @@ import AppProviders from "@/components/providers/AppProviders";
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
-  title: "Employee Management System",
+  title: "e-निरीक्षण",
   description: "Full-stack employee management system with AI features",
 };
 
